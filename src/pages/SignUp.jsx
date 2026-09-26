@@ -33,7 +33,7 @@ export default function SignUp() {
                                     </div>
                                     <div className="flex flex-col">
                                         <h2 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-purple-800 bg-clip-text text-transparent">
-                                           ZING
+                                           StockHub
                                         </h2>
                                     </div>
                                 </div>

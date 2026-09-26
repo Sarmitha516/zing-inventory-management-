@@ -42,13 +42,21 @@ const Product = ({ product, alertValue }) => {
             <div className="mt-4 grid grid-cols-2 gap-2">
                 <button
                     onClick={() => {
-                        setAddStock(0);
-                        inventoryDispatch({
-                            type: "STOCK_ADDED",
-                            productName: product.productName,
-                            stock: addStock,
-                        });
-                    }}
+    const quantity = Number(addStock);
+
+    if (quantity <= 0 || !Number.isInteger(quantity)) {
+        alert("Please enter a valid stock quantity");
+        return;
+    }
+
+    inventoryDispatch({
+        type: "STOCK_ADDED",
+        productName: product.productName,
+        stock: quantity,
+    });
+
+    setAddStock(0);
+}}
                     className="w-full py-2.5 rounded-lg font-semibold text-white shadow-md bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 transition"
                 >
                     Update Stock

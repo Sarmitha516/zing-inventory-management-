@@ -19,10 +19,24 @@ export default function Product({ product }) {
         }
     };
 
+    const getStockStatus = () => {
+        if (product.stock === 0) {
+            return "Out of Stock";
+        } else if (product.stock < 10) {
+            return "Low Stock";
+        } else {
+            return "In Stock";
+        }
+    };
+
     return (
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg border border-purple-200/40 p-4 flex flex-col">
             <div className="flex-1">
-                <h1 className="font-extrabold text-lg text-slate-900 text-center line-clamp-1">{product.productName}</h1>
+
+                <h1 className="font-extrabold text-lg text-slate-900 text-center line-clamp-1">
+                    {product.productName}
+                </h1>
+
                 <div className="mt-3 rounded-xl overflow-hidden border border-slate-200 bg-white">
                     <div className="w-full h-60">
                         <img
@@ -32,17 +46,42 @@ export default function Product({ product }) {
                         />
                     </div>
                 </div>
-                <p className="text-base mt-3 text-slate-700 text-center">Price: ₹ {product.price.toFixed(2)}</p>
+
+                <p className="text-base mt-3 text-slate-700 text-center">
+                    Price: ₹ {product.price.toFixed(2)}
+                </p>
+
+                <p className="text-sm mt-2 text-slate-600 text-center">
+                    Stock: {product.stock}
+                </p>
+
+                <p
+                    className={`text-sm mt-1 font-bold text-center ${
+                        product.stock === 0
+                            ? "text-red-600"
+                            : product.stock < 10
+                            ? "text-orange-500"
+                            : "text-green-600"
+                    }`}
+                >
+                    {getStockStatus()}
+                </p>
+
             </div>
+
             <button
                 onClick={onCartToggle}
                 className={`mt-4 w-full py-2.5 rounded-lg font-semibold text-white shadow-md transition ${
-                    cartItems.some((item) => item.productName === product.productName)
+                    cartItems.some(
+                        (item) => item.productName === product.productName
+                    )
                         ? "bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-400 hover:to-red-500"
                         : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
                 }`}
             >
-                {cartItems.some((item) => item.productName === product.productName)
+                {cartItems.some(
+                    (item) => item.productName === product.productName
+                )
                     ? "Remove from Cart"
                     : "Add to Cart"}
             </button>

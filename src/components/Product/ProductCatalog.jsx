@@ -4,13 +4,24 @@ import { useInventory } from "../../context/InventoryContext";
 
 export default function ProductCatalog() {
     const inventory = useInventory();
-    const [searchQuery, setSearchQuery] = useState("")
 
-    const filteredProducts = inventory.filter(
-        (item) =>
-            item.stock > 0 &&
-            item.productName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("all");
+
+    const filteredProducts = inventory.filter((item) => {
+        const matchesSearch =
+            item.productName
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+
+        const matchesCategory =
+            selectedCategory === "all" ||
+            item.tags?.some(
+                (tag) => tag.toLowerCase() === selectedCategory
+            );
+
+        return item.stock > 0 && matchesSearch && matchesCategory;
+    });
 
     return (
         <section className="relative w-full min-h-[calc(100vh-120px)]">
@@ -20,8 +31,14 @@ export default function ProductCatalog() {
             />
 
             <div className="relative z-10 flex flex-col items-center px-4 py-6">
+
                 <div className="w-full max-w-3xl bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-purple-200/40 p-5">
-                    <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-purple-800 bg-clip-text text-transparent text-center mb-4">Product Catalog</h1>
+
+                    <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-purple-800 bg-clip-text text-transparent text-center mb-4">
+                        Product Catalog
+                    </h1>
+
+                    {/* Search */}
                     <div className="w-full max-w-md mx-auto">
                         <div className="relative">
                             <svg
@@ -33,26 +50,65 @@ export default function ProductCatalog() {
                                 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
                             >
                                 <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <line
+                                    x1="21"
+                                    y1="21"
+                                    x2="16.65"
+                                    y2="16.65"
+                                />
                             </svg>
+
                             <input
                                 type="text"
                                 placeholder="Search products..."
                                 value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onChange={(e) =>
+                                    setSearchQuery(e.target.value)
+                                }
                                 className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition"
                             />
                         </div>
                     </div>
+
+                    {/* Categories */}
+                    <div className="flex flex-wrap justify-center gap-2 mt-4">
+
+                        {["all", "dairy", "snacks", "drink", "food"].map(
+                            (category) => (
+                                <button
+                                    key={category}
+                                    onClick={() =>
+                                        setSelectedCategory(category)
+                                    }
+                                    className={`px-4 py-2 rounded-lg font-semibold capitalize transition ${
+                                        selectedCategory === category
+                                            ? "bg-purple-600 text-white shadow-md"
+                                            : "bg-white text-slate-700 border border-slate-200 hover:bg-purple-50"
+                                    }`}
+                                >
+                                    {category === "all"
+                                        ? "All"
+                                        : category === "drink"
+                                        ? "Drinks"
+                                        : category}
+                                </button>
+                            )
+                        )}
+
+                    </div>
                 </div>
 
+                {/* Products */}
                 <div className="relative w-full max-w-5xl mt-4">
                     {filteredProducts.length > 0 ? (
                         <ProductList products={filteredProducts} />
                     ) : (
-                        <p className="m-2 text-slate-500 text-center">No products found.</p>
+                        <p className="m-2 text-slate-500 text-center">
+                            No products found.
+                        </p>
                     )}
                 </div>
+
             </div>
         </section>
     );

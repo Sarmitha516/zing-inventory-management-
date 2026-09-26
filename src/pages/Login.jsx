@@ -3,12 +3,18 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
     const navigate = useNavigate();
     const onSubmit = (e) => {
-        e.preventDefault();
-        try {
-            localStorage.setItem('isLoggedIn', 'true');
-        } catch (e) {}
+    e.preventDefault();
+
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+
+    if (username === "Sarmitha" && password === "12345") {
+        localStorage.setItem('isLoggedIn', 'true');
         navigate('/');
-    };
+    } else {
+        alert("Invalid username or password");
+    }
+};
 
     return (
         <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
@@ -33,12 +39,12 @@ export default function Login() {
                                     </div>
                                     <div className="flex flex-col">
                                         <h2 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-purple-800 bg-clip-text text-transparent">
-                                            Zing
+                                            StockHub
                                         </h2>
                                     </div>
                                 </div>
                             </div>
-                            <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-purple-800 bg-clip-text text-transparent mb-8 text-center">Welcome Back</h1>
+                            <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-purple-800 bg-clip-text text-transparent mb-8 text-center">Welcome to StockHub</h1>
                             <form onSubmit={onSubmit} className="space-y-5">
                                 <div>
                                     <label htmlFor="username" className="block text-sm font-semibold text-slate-700 mb-1.5">Username</label>

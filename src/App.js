@@ -17,6 +17,7 @@ import { SalesProvider } from './context/SalesContext';
 import Sales from './components/Sales/Sales';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
 import { Navigate } from "react-router-dom";
 
 const RequireAuth = ({ children }) => {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <ProductCatalog />,
       },
+      {
+    path: "/dashboard",
+    element: <Dashboard />,
+},
       {
         path: "/add-product",
         element: <AddProduct />,
